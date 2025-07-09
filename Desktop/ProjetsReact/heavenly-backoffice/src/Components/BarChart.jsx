@@ -1,25 +1,39 @@
 import React from "react";
-import ApexCharts from "apexcharts";
+import "chart.js/auto";
+import { Bar } from "react-chartjs-2";
 
-export default function BarChart() {
-  var options = {
-    chart: {
-      type: "bar",
-    },
-    series: [
+export default function IncomeCharts() {
+  const data = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    datasets: [
       {
-        name: "sales",
-        data: [30, 40, 45, 50, 49, 60, 70, 91, 125],
+        label: "Revenus",
+        data: [1200, 1900, 3000, 2500, 2200, 2700],
+        backgroundColor: "#3B82F6",
+        borderRadius: 7,
       },
     ],
-    xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
+  };
+
+  const options = {
+    responsive: true,
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+      y: {
+        grid: {
+          display: false,
+        },
+      },
     },
   };
 
-  var chart = new ApexCharts(document.querySelector("#chart"), options);
-
-  chart.render();
-
-  return <div id="chart"></div>;
+  return (
+    <div style={{ width: "100%", height: "300px" }}>
+      <Bar data={data} options={options} />
+    </div>
+  );
 }

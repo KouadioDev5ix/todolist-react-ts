@@ -1,28 +1,13 @@
 import React, { useEffect } from "react";
-import BarChart from "../../Components/BarChart";
-import Chart from "react-apexcharts";
+
 import { Search } from "lucide-react";
+import IncomeCharts from "../../Components/BarChart";
+import IncomeDoughnutChart from "../../Components/IncomeDoughnutChart";
 
 // import { Bar } from "react-chartjs-2";
 // import "chart.js/auto";
 
 export default function Dashboard() {
-  const options = {
-    chart: {
-      type: "bar",
-    },
-    xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
-    },
-  };
-
-  const series = [
-    {
-      name: "sales",
-      data: [30, 40, 45, 50, 49, 60, 70, 91, 125],
-    },
-  ];
-
   return (
     <div className="p-2">
       <div className="flex items-center justify-between">
@@ -99,14 +84,16 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="mt-7">
-            <button className="flex gap-3 px-2 py-1 text-white bg-black font-semibold rounded-md">
-              <Search strokeWidth={1.25} className="" />
+          <div className="mt-6">
+            <button className="flex gap-1 px-1 py-1 text-white bg-black font-semibold rounded-md">
+              <Search strokeWidth={2.25} className="w-5 h-5" />
               Rechercher
             </button>
           </div>
         </div>
       </div>
+
+      {/* BOXES SECTIONS */}
 
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-5 gap-6 w-full">
@@ -264,15 +251,37 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* <div className="w-full max-w-96 bg-gray-50">
-        <Chart
-          options={options}
-          series={series}
-          type="bar"
-          width="100%"
-          height="350"
-        />
-      </div> */}
+      {/* GRAPHIQUE SECTIONS */}
+
+      <div className="flex flex-col md:flex-row gap-5">
+        {/* GRAPHE À BARRES */}
+        <div className="w-[540px]">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-[#A1A1A1] my-4">
+              Statistiques
+            </h2>
+          </div>
+          <div className="bg-white rounded-md shadow border border-gray-200 p-4 w-full">
+            <h3 className="text-lg font-bold mb-4">Revenus générés (FCFA)</h3>
+            <IncomeCharts />
+          </div>
+        </div>
+
+        {/* GRAPHE DOUGHNUT */}
+        <div className="w-[540px]">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-[#A1A1A1] my-4">
+              Analyse
+            </h2>
+          </div>
+          <div className="bg-white rounded-md shadow border border-gray-200 p-4 w-full mx-auto">
+            <h3 className="text-lg font-bold mb-4">
+              Répartition des revenus par section
+            </h3>
+            <IncomeDoughnutChart />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

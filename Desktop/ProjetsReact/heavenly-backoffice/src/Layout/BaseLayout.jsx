@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Logo from "../assets/Thumbails/ce5699233cbc0f142250b520d967dff7 (1).png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import dashbordIcon from "../assets/Icons/Dashbord.svg";
 import Users from "../assets/Icons/users.svg";
 import produitsIcons from "../assets/Icons/Produits.svg";
@@ -15,6 +15,7 @@ const activedLinkClassName =
   "flex items-center gap-2 py-2 px-4 my-1 text-white bg-orange-600 text-md font-semibold rounded-lg hover:bg-orange-600";
 
 export default function BaseLayout() {
+  const navigateTo = useNavigate();
   const openDialogModal = () => {
     document.getElementById("deconnection").showModal();
   };
@@ -26,16 +27,10 @@ export default function BaseLayout() {
 
   const handlelogOut = () => {
     localStorage.removeItem("isConnected");
-    sessionActive();
+    navigateTo("/authentification");
   };
 
-  const sessionActive = () => {
-    localStorage.getItem("isConnected");
-  };
-
-  useEffect(() => {
-    sessionActive();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div className="flex h-screen w-full overflow-hidden">
@@ -217,11 +212,11 @@ export default function BaseLayout() {
               <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
               <circle cx="12" cy="12" r="3" />
             </svg>
-            Paramétrages
+            Paramétrage
           </NavLink>
 
           <div
-            className=" absolute bottom-5 bg-red-700 flex  items-center justify-center border w-56 py-3 rounded-md gap-2 cursor-pointer hover:bg-red-600 transition-all"
+            className=" absolute bottom-5 bg-red-700 flex  items-center justify-center border w-56 py-3 rounded-md gap-2 cursor-pointer transition-all"
             onClick={openDialogModal}
           >
             <svg

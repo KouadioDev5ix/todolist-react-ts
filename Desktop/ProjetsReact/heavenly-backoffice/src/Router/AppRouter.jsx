@@ -9,16 +9,32 @@ import Orders from "../Pages/Orders/Orders";
 import Settings from "../Pages/Settings/Settings";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import userIsConnected from "../Utils/AuthGuard";
+import ForgortPassword from "../Pages/ForgortPassword/ForgortPassword";
 
 const RoutesGuard = () => {
-  return userIsConnected() ? <BaseLayout /> : <Navigate to="/login" />;
+  return userIsConnected() ? (
+    <BaseLayout />
+  ) : (
+    <Navigate to="/authentification" />
+  );
 };
 
 export const AppRouter = createHashRouter([
   {
-    path: "/login",
-    element: <Login />,
+    path: "/authentification",
+    element: userIsConnected() ? <Navigate to="/" /> : <Login />,
   },
+
+  {
+    path: "/mot-de-pass-oublié",
+    element: <ForgortPassword />,
+  },
+
+  // {
+  //   path: "/mot-de-pass-oublié",
+  //   element: userIsConnected() ? <Navigate to="/" /> : <ForgortPassword />,
+  // },
+
   {
     path: "/",
     element: <RoutesGuard />,

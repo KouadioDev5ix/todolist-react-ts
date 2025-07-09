@@ -1,18 +1,13 @@
 import React, { useState } from "react";
-import mainBg from "../../assets/Thumbails/shopping-venture-4536066_1280.jpg";
+import mainBg from "../../assets/Thumbails/shopping-mall-7340181_1280.jpg";
 import forIcon from "../../assets/Thumbails/ce5699233cbc0f142250b520d967dff7 (1).png";
-import { access } from "../../Acces";
 import toast from "react-hot-toast";
 import { RotatingLines } from "react-loader-spinner";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import showPassword from "../../assets/Icons/show_Password.svg";
-import HiddePassWord from "../../assets/Icons/HiddePASSWRD.svg";
-
-export default function Login() {
+export default function ForgortPassword() {
   const [globalFormData, setGloblaFormData] = useState({
     userName: "",
-    passWord: "",
   });
   const [error, setError] = useState({
     userName: "",
@@ -20,9 +15,10 @@ export default function Login() {
   });
 
   const [AppBooleanState, setAppBooleanState] = useState({
-    logingLoding: false,
+    sendingEmailLoading: false,
     inputContaintsError: false,
     showPassword: false,
+    sendingEmailSuccess: false,
   });
 
   const navigateTo = useNavigate();
@@ -37,7 +33,6 @@ export default function Login() {
       userName: "Nom d'utilisateur",
       passWord: "Mot de pass",
     };
-
     return mapping[field] || field;
   };
 
@@ -53,6 +48,15 @@ export default function Login() {
       [name]: value,
     }));
   };
+  /**
+   * Simple regular expression to check a valid email
+   * @param {string} email
+   * @returns {boolean}
+   */
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
 
   /**
    *
@@ -75,7 +79,7 @@ export default function Login() {
     if (inputHasError) {
       setAppBooleanState((previouState) => ({
         ...previouState,
-        logingLoding: false,
+        sendingEmailLoading: false,
       }));
       setAppBooleanState((previouState) => ({
         ...previouState,
@@ -83,25 +87,29 @@ export default function Login() {
       }));
       return;
     }
-
     setAppBooleanState((previouState) => ({
       ...previouState,
-      logingLoding: true,
+      sendingEmailLoading: true,
     }));
 
     setTimeout(() => {
       setAppBooleanState((previouState) => ({
         ...previouState,
-        logingLoding: false,
+        sendingEmailLoading: false,
       }));
-      if (
-        globalFormData.userName === access.username &&
-        globalFormData.passWord === access.psw
-      ) {
-        localStorage.setItem("isConnected", "true");
-        navigateTo("/");
+      if (isValidEmail(globalFormData.userName)) {
+        setAppBooleanState((previousState) => ({
+          ...previousState,
+          sendingEmailSuccess: true,
+        }));
+        toast.success(
+          "Merci, votre adresse mail est enregistrée Vous recevrez un nouvel accès sous peu."
+        );
+        setGloblaFormData({
+          userName: "",
+        });
       } else {
-        toast.error("Oups, nom utilisateur ou mot de pass incorrecte");
+        toast.error("Veuillez renseigner une address mail valide !");
       }
     }, 2000);
   };
@@ -109,13 +117,6 @@ export default function Login() {
   /**
    *
    */
-
-  const hiddeOrShowPassWord = () => {
-    setAppBooleanState((previouState) => ({
-      ...previouState,
-      showPassword: !previouState.showPassword,
-    }));
-  };
 
   return (
     <div className="relative w-full h-screen">
@@ -127,11 +128,11 @@ export default function Login() {
       />
 
       {/* Overlay*/}
-      {/* <div className="absolute w-full h-full bg-black/55"></div> */}
+      <div className="absolute w-full h-full bg-black/45"></div>
 
       {/* Formulaire centré */}
-      <div className="relative flex items-center justify-center w-full h-full p-3">
-        <div className="bg-gray-100 p-2  md:p-5 rounded-xl shadow-md w-full max-w-md md:max-w-lg h-fit">
+      <div className="flex items-center justify-center w-full h-full p-3">
+        <div className="relative bg-gray-100 p-2  md:p-5 rounded-xl shadow-md w-full max-w-md md:max-w-lg h-fit">
           <div className="flex items-center justify-center">
             <img
               src={forIcon}
@@ -139,14 +140,19 @@ export default function Login() {
               className="w-14 h-14 rounded-full text-center"
             />
           </div>
-          <h2 className="text-lg font-medium mb-3 text-gray-600 text-center">
-            Bienvenue, commencez par vous authentifier !
+          <h2 className="text-lg font-medium mb-6 text-gray-600 text-center">
+            Veuillez renseigner votre adrress mail
           </h2>
+          {/* 
+          <span className="  absolute mx-auto top-24 text-xs font-medium text-green-600">
+            Merci, votre adresse mail est enregistrée. <br /> Vous recevrez un
+            nouvel accès sous peu.
+          </span> */}
 
           <div className="form-control w-full max-w-full">
             <label className="label mb-0">
               <span className="label-text font-bold -mb-1 text-gray-600 text-xs  ">
-                Nom utilisateur <span className="text-red-600">*</span>
+                Addresse mail
               </span>
             </label>
             <input
@@ -154,57 +160,22 @@ export default function Login() {
               onChange={handleChange}
               name="userName"
               type="text"
-              placeholder="Ex: Fredo@"
+              placeholder="Ex: kouadio@gmail.com"
               className={`input input-bordered text-xs w-full h-5 md:h-10 max-w-full rounded-md ${
                 error.userName && AppBooleanState.inputContaintsError
                   ? "input-error"
                   : ""
               } `}
-              disabled={AppBooleanState.logingLoding}
+              disabled={AppBooleanState.sendingEmailLoading}
             />
           </div>
 
-          <div className="form-control w-full relative max-w-full">
-            <label className="label mb-0">
-              <span className="label-text font-bold text-gray-600 -mb-1 text-xs  ">
-                Mot de pass <span className="text-red-600">*</span>
-              </span>
-            </label>
-            <input
-              value={globalFormData.passWord}
-              onChange={handleChange}
-              name="passWord"
-              type={AppBooleanState.showPassword ? "text" : "password"}
-              placeholder="***************"
-              className={`input input-bordered text-xs w-full h-5 md:h-10 max-w-full rounded-md ${
-                error.passWord && AppBooleanState.inputContaintsError
-                  ? "input-error"
-                  : ""
-              } `}
-              disabled={AppBooleanState.logingLoding}
-            />
-
-            <span
-              onClick={hiddeOrShowPassWord}
-              className="absolute cursor-pointer inset-y-0 mt-7 right-0 pr-3 flex items-center justify-center text-sm"
-            >
-              {AppBooleanState.showPassword ? (
-                <>
-                  <img src={showPassword} alt="eye icon" className="w-5 h-5" />
-                </>
-              ) : (
-                <>
-                  <img src={HiddePassWord} alt="eye hash" className="w-5 h-5" />
-                </>
-              )}
-            </span>
-          </div>
           <div className="pt-5 md:pt-7" onClick={handleLogin}>
             <button
               className="w-full flex items-center justify-center  text-white p-0 md:p-2 rounded bg-orange-600 font-normal md:font-medium transition"
-              disabled={AppBooleanState.logingLoding}
+              disabled={AppBooleanState.sendingEmailLoading}
             >
-              {AppBooleanState.logingLoding ? (
+              {AppBooleanState.sendingEmailLoading ? (
                 <>
                   <RotatingLines
                     visible={true}
@@ -219,7 +190,7 @@ export default function Login() {
                   />
                 </>
               ) : (
-                "Se connecter"
+                "Envoyer"
               )}
             </button>
           </div>
@@ -233,18 +204,18 @@ export default function Login() {
           <div className="flex items-center justify-center">
             <button
               className={`underline font-medium md:font-semibold ${
-                AppBooleanState.logingLoding
+                AppBooleanState.sendingEmailLoading
                   ? "text-gray-400 cursor-not-allowed"
                   : "text-gray-500 cursor-pointer"
               }`}
-              disabled={AppBooleanState.logingLoding}
+              disabled={AppBooleanState.sendingEmailLoading}
               onClick={() => {
-                if (!AppBooleanState.logingLoding) {
-                  navigateTo("/mot-de-pass-oublié");
+                if (!AppBooleanState.sendingEmailLoading) {
+                  navigateTo("/authentification");
                 }
               }}
             >
-              Mot de pass oublier ?
+              Se connecter
             </button>
           </div>
         </div>
