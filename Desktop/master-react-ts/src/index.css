@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #0284c7;
+} */
+
+.no-scollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
