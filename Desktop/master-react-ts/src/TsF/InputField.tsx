@@ -31,7 +31,7 @@ export default function InputField({
 
         <button
           type="submit"
-          className="absolute right-0.5 top-0.5 bottom-0.5 bg-black px-2 py-1 rounded-md text-white active:scale(0.8)"
+          className="absolute right-0.5 top-0.5 bottom-0.5 bg-black px-2 py-1 rounded-md text-white"
         >
           {wantToEditTask ? "Modifier" : "Ajouter"}
         </button>

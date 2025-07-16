@@ -13,6 +13,7 @@ interface ToDoListItemProps {
 
 export default function ToDoListItem({
   toDos,
+
   handleDeleteTodo,
   selectedTaskToEdit,
   toggleToDo,
@@ -22,7 +23,7 @@ export default function ToDoListItem({
       {toDos.map((item) => (
         <div
           key={item.id}
-          className="flex w-[370px] my-2 px-2 py-2 rounded-md items-center justify-between gap-4 border "
+          className="flex w-[370px] my-2 px-2 py-2 rounded-md items-center justify-between gap-4 border bg-gray-500 "
         >
           <div className="flex items-center gap-2 cursor-pointer">
             <input

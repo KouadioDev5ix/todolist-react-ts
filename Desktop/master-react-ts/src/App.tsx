@@ -15,6 +15,7 @@ export default function App() {
   );
   const [selectedTask, setSelectedTask] = useState<string>("");
   const [wantToEditTask, setWantToEditTask] = useState<boolean>(false);
+
   const filteredTodos = toDoCreated.filter((todo) => {
     if (activeTab === "Terminées") return todo.completed;
     if (activeTab === "Inachevées") return !todo.completed;
@@ -35,6 +36,7 @@ export default function App() {
       label: "Inachevées",
     },
   ];
+
   const LOCAL_STORAGE_TODO_KEY: string = "todosCreacted";
 
   /**
@@ -131,12 +133,6 @@ export default function App() {
 
     loadTodoSinceLocalStorage(toDoDeleted);
     storeToDosInLocalStorage();
-
-    console.log(
-      "call from handleDeleteTodo() ",
-      todoToDeleteId,
-      typeof todoToDeleteId
-    );
   };
 
   /**
